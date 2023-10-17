@@ -21,7 +21,7 @@ class PostController extends Controller
         $posts = Post::all();
 
         return Inertia::render(
-            'Posts/Index',
+            'Post/Index',
             [
                 'posts' => $posts
             ]
@@ -34,7 +34,7 @@ class PostController extends Controller
     public function create()
     {
         return Inertia::render(
-            'Posts/Create'
+            'Post/Create'
         );
     }
 
@@ -43,7 +43,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required'
+        ]);
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content
+        ]);
+        sleep(1);
+
+        return redirect()->route('posts.index')->with('message', 'Blog Created Successfully');
     }
 
     /**
@@ -57,24 +67,42 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        return Inertia::render(
+            'Post/Edit',
+            [
+                'post' => $post
+            ]
+        );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required'
+        ]);
+
+        $post->title = $request->title;
+        $post->content = $request->content;
+        $post->save();
+        sleep(1);
+
+        return redirect()->route('posts.index')->with('message', 'Blog Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        sleep(1);
+
+        return redirect()->route('posts.index')->with('message', 'Blog Delete Successfully');
     }
 }
