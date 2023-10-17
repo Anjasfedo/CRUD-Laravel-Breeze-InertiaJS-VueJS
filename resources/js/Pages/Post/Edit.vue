@@ -11,37 +11,35 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    CModalEdit: {
+        type: Function,
+    },
+    idPost: {
+        type: Number
+    }
 });
 
 const form = useForm({
-    id_post: props.post.id_post,
+    id_post: props.idPost,
     title: props.post.title,
     content: props.post.content,
 });
 
 
 const submit = () => {
-    form.put(route("posts.update", props.post.id_post));
+    form.put(route("posts.update", props.idPost));
+    
 };
 </script>
 
 <template>
-    <Head title="post Edit" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                post Edit
-            </h2>
-        </template>
-
         <div class="py-12">
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <form @submit.prevent="submit">
                             <div>
-                                <InputLabel for="title" value="Title" />
+                                <InputLabel for="title" value="title" />
 
                                 <TextInput id="title" type="text" class="mt-1 block w-full" v-model="form.title" required
                                     autofocus autocomplete="username" />
@@ -67,5 +65,4 @@ const submit = () => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
 </template>

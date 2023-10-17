@@ -11,6 +11,12 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    modalCreate: {
+        type: Boolean,
+    },
+    cModalCreate: {
+        type: Function,
+    },
 });
 
 const form = useForm({
@@ -20,19 +26,12 @@ const form = useForm({
 
 const submit = () => {
     form.post(route("posts.store"));
+    cModalCreate();
 };
 </script>
 
 <template>
-    <Head title="Blog Create" />
-
-    <AuthenticatedLayout>
-        <template #header>
-            <h2 class="text-xl font-semibold leading-tight text-gray-800">
-                Blog Create
-            </h2>
-        </template>
-
+        <button @click="cModalCreate">Close Modal</button>
         <div class="py-12">
             <div class="mx-auto max-w-7xl">
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
@@ -90,5 +89,4 @@ const submit = () => {
                 </div>
             </div>
         </div>
-    </AuthenticatedLayout>
 </template>

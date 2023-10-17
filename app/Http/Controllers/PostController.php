@@ -33,9 +33,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return Inertia::render(
-            'Post/Create'
-        );
+        // 
     }
 
     /**
@@ -69,12 +67,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return Inertia::render(
-            'Post/Edit',
-            [
-                'post' => $post
-            ]
-        );
+        // 
     }
 
     /**
@@ -92,7 +85,7 @@ class PostController extends Controller
         $post->save();
         sleep(1);
 
-        return redirect()->route('posts.index')->with('message', 'Blog Updated Successfully');
+        return back();
     }
 
     /**
@@ -103,6 +96,6 @@ class PostController extends Controller
         $post->delete();
         sleep(1);
 
-        return redirect()->route('posts.index')->with('message', 'Blog Delete Successfully');
+        return back();
     }
 }

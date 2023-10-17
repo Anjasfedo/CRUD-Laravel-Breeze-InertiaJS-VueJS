@@ -3,6 +3,18 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 
+import CreateModal from './Create.vue';
+
+import EditModal from './Edit.vue';
+
+import DeleteModal from './Delete.vue'
+
+import Modal from '@/Components/Modal.vue';
+
+
+
+import { ref } from 'vue';
+
 const props = defineProps({
     posts: {
         type: Object,
@@ -11,11 +23,42 @@ const props = defineProps({
 });
 const form = useForm({});
 
-function destroy(id_post) {
-    if (confirm("Are you sure you want to Delete")) {
-        form.delete(route("posts.destroy", id_post));
-    }
+// function destroy(id_post) {
+//     if (confirm("Are you sure you want to Delete")) {
+//         form.delete(route("posts.destroy", id_post));
+//     }
+// }
+
+const modalCreate = ref(false);
+
+const cModalCreate = () => {
+    modalCreate.value = false
 }
+
+// 
+
+const modalDelete = ref(false)
+
+const deleteModal = (idPost) => {
+    postId.value = idPost;
+    modalDelete.value = true;
+}
+
+// 
+
+const modalEdit = ref(false)
+
+const openEditModal = (idPost) => {
+    postId.value = idPost;
+    modalEdit.value = true
+}
+
+const CModalEdit = () => {
+    modalEdit.value = false
+}
+
+const postId = ref(null);
+
 </script>
 
 <template>
@@ -33,9 +76,12 @@ function destroy(id_post) {
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="mb-2">
-                            <Link :href="route('posts.create')">
-                            <PrimaryButton>Add post</PrimaryButton>
-                            </Link>
+
+                            <PrimaryButton @click="modalCreate = true">Add post</PrimaryButton>
+                            <Modal :show="modalCreate" @close="modalCreate = true">
+                                <CreateModal :modalCreate="modalCreate" :cModalCreate="cModalCreate"/>
+                            </Modal>
+
                         </div>
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -74,11 +120,10 @@ function destroy(id_post) {
                                             {{ post.content }}
                                         </th>
                                         <td class="px-6 py-4">
-                                            <Link :href="route('posts.edit', post.id_post)
-                                                " class="px-4 py-2 text-white bg-blue-600 rounded-lg">Edit</Link>
+                                            <PrimaryButton class="px-4 py-2 text-white bg-blue-600 rounded-lg" @click="openEditModal(post.id_post)">Edit</PrimaryButton>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <PrimaryButton class="bg-red-700" @click="destroy(post.id_post)">
+                                            <PrimaryButton class="bg-red-700" @click="deleteModal(post.id_post)">
                                                 Delete
                                             </PrimaryButton>
                                         </td>
@@ -90,5 +135,13 @@ function destroy(id_post) {
                 </div>
             </div>
         </div>
+
+        <Modal :show="modalEdit" @close="modalEdit = false">
+            <EditModal :idPost="postId" @CModalEdit="CModalEdit" />
+          </Modal>
+
+          <Modal :show="modalDelete" @close="modalDelete = false">
+            <DeleteModal :idPost="postId" />
+          </Modal>
     </AuthenticatedLayout>
 </template>
