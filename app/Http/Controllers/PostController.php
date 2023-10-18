@@ -79,7 +79,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, string $id)
     {
         $request->validate([
             'title' => 'required|string|max:255|min:5',
@@ -92,6 +92,8 @@ class PostController extends Controller
             'content.min' => 'Konten minimal harus memiliki 5 karakter.'
         ]);
 
+        $post = Post::find($id);
+
         $post->title = $request->title;
         $post->content = $request->content;
         $post->save();
@@ -103,8 +105,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(string $id)
     {
+        $post = Post::find($id);
+        
         $post->delete();
         sleep(1);
 
