@@ -11,9 +11,7 @@ import DeleteModal from './Delete.vue'
 
 import Modal from '@/Components/Modal.vue';
 
-
-
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
     posts: {
@@ -63,10 +61,21 @@ const cModalEdit = () => {
 
 const postId = ref({});
 
+
+// // Inisialisasi DataTable setelah tampilan Inertia selesai dimuat
+// const initDataTable = () => {
+//     $('#example').DataTable();
+// };
+
+// // Panggil initDataTable ketika komponen telah dimuat sepenuhnya
+// onMounted(() => {
+//     initDataTable();
+// });
+
 </script>
 
 <template>
-    <Head title="posts" />
+    <Head title="Post" />
 
     <AuthenticatedLayout>
         <template #header>
@@ -80,60 +89,55 @@ const postId = ref({});
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <div class="mb-2">
-
                             <PrimaryButton @click="modalCreate = true">Add post</PrimaryButton>
                             <Modal :show="modalCreate" @close="modalCreate = true">
                                 <CreateModal :modalCreate="modalCreate" :cModalCreate="cModalCreate"/>
                             </Modal>
-
                         </div>
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <div class="relative shadow-md sm:rounded-lg">
+                            <div class="overflow-hidden">
+                                <table id="example" style="width:100%" class="ui celled table w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">#</th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="">#</th>
+                                        <th scope="col" class="">
                                             Title
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
+                                        <th scope="col" class="">
                                             Content
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Edit
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Delete
+                                        <th scope="col" class="">
+                                            Aksi
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="post, index in posts" :key="post.id_post"
-                                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                        class="bg-white border-b dark:border-gray-700">
                                         <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                            class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {{ index + 1 }}
                                         </th>
                                         <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                            class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {{ post.title }}
                                         </th>
 
                                         <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                                            class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap">
                                             {{ post.content }}
                                         </th>
-                                        <td class="px-6 py-4">
+                                        <td class="px-3 py-4">
                                             <PrimaryButton class="px-4 py-2 text-white bg-blue-600 rounded-lg" @click="openEditModal(post)">Edit</PrimaryButton>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <PrimaryButton class="bg-red-700" @click="deleteModal(post)">
+                                            <PrimaryButton class="bg-red-700 ml-4" @click="deleteModal(post)">
                                                 Delete
                                             </PrimaryButton>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                            </div>
                         </div>
                     </div>
                 </div>
