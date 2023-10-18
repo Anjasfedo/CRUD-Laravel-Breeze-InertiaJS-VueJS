@@ -44,6 +44,10 @@ const deleteModal = (idPost) => {
     modalDelete.value = true;
 }
 
+const cModalDelete = () => {
+    modalDelete.value = false
+}
+
 // 
 
 const modalEdit = ref(false)
@@ -53,11 +57,11 @@ const openEditModal = (idPost) => {
     modalEdit.value = true
 }
 
-const CModalEdit = () => {
+const cModalEdit = () => {
     modalEdit.value = false
 }
 
-const postId = ref(null);
+const postId = ref({});
 
 </script>
 
@@ -104,11 +108,11 @@ const postId = ref(null);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="post in posts" :key="post.id_post"
+                                    <tr v-for="post, index in posts" :key="post.id_post"
                                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            {{ post.id_post }}
+                                            {{ index + 1 }}
                                         </th>
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
@@ -120,10 +124,10 @@ const postId = ref(null);
                                             {{ post.content }}
                                         </th>
                                         <td class="px-6 py-4">
-                                            <PrimaryButton class="px-4 py-2 text-white bg-blue-600 rounded-lg" @click="openEditModal(post.id_post)">Edit</PrimaryButton>
+                                            <PrimaryButton class="px-4 py-2 text-white bg-blue-600 rounded-lg" @click="openEditModal(post)">Edit</PrimaryButton>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <PrimaryButton class="bg-red-700" @click="deleteModal(post.id_post)">
+                                            <PrimaryButton class="bg-red-700" @click="deleteModal(post)">
                                                 Delete
                                             </PrimaryButton>
                                         </td>
@@ -136,12 +140,12 @@ const postId = ref(null);
             </div>
         </div>
 
-        <Modal :show="modalEdit" @close="modalEdit = false">
-            <EditModal :idPost="postId" @CModalEdit="CModalEdit" />
+        <Modal :show="modalEdit" @close="modalEdit = true">
+            <EditModal :modalEdit="modalEdit" :idPost="postId" :cModalEdit="cModalEdit" />
           </Modal>
 
-          <Modal :show="modalDelete" @close="modalDelete = false">
-            <DeleteModal :idPost="postId" />
+          <Modal :show="modalDelete" @close="modalDelete = true" :maxWidth="'sm'" :position="'relative top-48'">
+            <DeleteModal :modalDelete="modalDelete" :idPost="postId" :cModalDelete="cModalDelete" />
           </Modal>
     </AuthenticatedLayout>
 </template>

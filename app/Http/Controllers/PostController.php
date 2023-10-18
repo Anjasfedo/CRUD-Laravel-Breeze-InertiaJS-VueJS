@@ -42,8 +42,14 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required'
+            'title' => 'required|string|max:255|min:5',
+            'content' => 'required|min:5'
+        ], [
+            'title.required' => 'Judul wajib diisi.',
+            'title.min' => 'Judul minimal harus memiliki 5 karakter.',
+            'title.max' => 'Judul tidak boleh melebihi 255 karakter.',
+            'content.required' => 'Konten wajib diisi.',
+            'content.min' => 'Konten minimal harus memiliki 5 karakter.'
         ]);
         Post::create([
             'title' => $request->title,
@@ -51,7 +57,7 @@ class PostController extends Controller
         ]);
         sleep(1);
 
-        return redirect()->route('posts.index')->with('message', 'Blog Created Successfully');
+        return back();
     }
 
     /**
@@ -76,8 +82,14 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required'
+            'title' => 'required|string|max:255|min:5',
+            'content' => 'required|min:5'
+        ], [
+            'title.required' => 'Judul wajib diisi.',
+            'title.min' => 'Judul minimal harus memiliki 5 karakter.',
+            'title.max' => 'Judul tidak boleh melebihi 255 karakter.',
+            'content.required' => 'Konten wajib diisi.',
+            'content.min' => 'Konten minimal harus memiliki 5 karakter.'
         ]);
 
         $post->title = $request->title;
